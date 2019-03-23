@@ -3,9 +3,11 @@ import ReactDOM from 'react-dom';
 
 
 import {ReportSelection} from './components/app';
+import {ApprovalI} from './components/ApprovalI';
+
 import {TreeComponent} from './lib/ous'
 import api from './dhis2API';
-
+import constants from './constants'
 
 window.onload = function(){
 /* Menu Bar */
@@ -29,30 +31,29 @@ window.onload = function(){
       
     ReactDOM.render(<TreeComponent  onSelectCallback={select}/>, document.getElementById('treeComponent'));
 
-     
-    var dsService = new api.dataStoreService('XLReport_Metadata');
-    var ouService = new api.organisationUnitService();
-    var peService = new api.periodService();
-    
-    var Preports = dsService.getAllKeyValues();
-    var PouGroups = ouService.getOUGroups("id,name");
 
-    Promise.all([Preports,PouGroups]).then(function(values){
+    var apiWrapper = new api.wrapper();
+    
+    var Pprogram = apiWrapper.getObj(`programs\\${constants.program_doc_diary}?fields=id,name,programStages[id,name]`)
+    var Pme = apiWrapper.getObj(`me.json?fields=id,name,displayName,organisationUnits[id,name],userCredentials[*]`);
+    
+    
+    Promise.all([Pprogram,Pme]).then(function(values){
         
-        ReactDOM.render(<ReportSelection data ={
+        ReactDOM.render(<ApprovalI data ={
             {
-                reports : values[0],
-                ouGroups : values[1].organisationUnitGroups
+                program : values[0],
+                user : values[1]
             }
         }  services = {
             {
-                peService : peService,
                 ouSelectCallback :select
 
             }
         }/>, document.getElementById('form'));
 
     }).catch(reason => {
+//        console.log(reason);
         // TODO
         ReactDOM.render(<div>No reports exist.</div>,document.getElementById('form'))
     });
