@@ -12,7 +12,8 @@ export function ApprovalTable(props){
         program : props.program,
         events : props.events,
         teiWiseAttrVals : props.teiWiseAttrVals,
-        selectedSpeciality : props.selectedSpeciality
+        selectedSpeciality : props.selectedSpeciality,
+        ouMap : []
     };
 
     var programStageMap = state.program.programStages.reduce(function(map,obj){
@@ -41,26 +42,29 @@ export function ApprovalTable(props){
 
         return list;
     }
-
+  // https://devtest.hispindia.org/upupgrade/api/organisationUnits.json?filter=id:in:[frUcctRfQiB,PYat3gF9Zqv]&fields=id,name,ancestors
     function getRows(){
-        state.events.reduce(function(list,event){
+      
+        return state.events.reduce(function(list,event){
+            var eventDVMap = event.dataValues.reduce(function(map,obj){
+                map[obj.dataElement] = obj.value;
+                return map;                
+            },[]);
 
-// https://devtest.hispindia.org/upupgrade/api/organisationUnits.json?filter=id:in:[frUcctRfQiB,PYat3gF9Zqv]&fields=id,name,ancestors
+            list.push(<td key="d_eventdate">{event.eventDate}</td>);
+            list.push(<td key="d_name of specilist">{}</td>);
+            list.push(<td key="d_ou">{event.orgUnit}</td>);
+            
+            selectedStage.
+                programStageDataElements.
+                reduce(function(list,obj){
+                    list.push(<td key={"d"+obj.id}>{eventDVMap[obj.dataElement.id]}</td>)
+                    return list;
+                },list);
+            
+            return (<tr>{list}</tr>)
         },[])
         
-        var list = [];
-        list.push(<td key="d_eventdate">{}</td>);
-        list.push(<td key="d_name of specilist">Name of Specialist</td>);
-        list.push(<td key="d_ou">Org Unit</td>);
-        
-        selectedStage.
-            programStageDataElements.
-            reduce(function(list,obj){
-                list.push(<td key={obj.id}>{obj.dataElement.name}</td>)
-                return list;
-            },list);
-        
-        return list;
         
     }
     

@@ -15,7 +15,7 @@ export function ApprovalI(props){
         user : props.data.user,
         selectedOU : {name : ""},
         ouMode : "DESCENDANTS",
-        sdate : new Date("2019-01-01").toISOString().substr(0,10),
+        sdate : new Date("2018-01-01").toISOString().substr(0,10),
         edate : new Date().toISOString().substr(0,10),
         selectedSpeciality : "FkNlQ5arLjv",
         events : null,
