@@ -15,6 +15,42 @@ exports.views = {
     settings: "settings"
 };
 
+exports.approval_status = {
+
+    Iapproval : "Approval1",
+    IIapproval : "Approval2",
+    Iauto : "Auto-Approval1",
+    IIauto : "Auto-Approval2",
+    Irejected : "Rejected1",
+    IIrejected : "Rejected2"
+    
+    
+}
+
+exports.approval_status_de = "";
+
+exports.query_teiWiseAttrValue = function(teis){
+
+    
+    return `select json_agg(attrvalues) as attrvals
+        from(
+	    select json_build_object(
+                'tei',tei.uid,'attrs',
+	        json_agg(
+	            json_build_object(
+			'attr' , tea.uid,
+			'value' , teav.value
+		        
+		    )
+	        )) as attrvalues
+
+	    from trackedentityattributevalue teav
+	    inner join trackedentityinstance tei on tei.trackedentityinstanceid = teav.trackedentityinstanceid
+	    inner join trackedentityattribute tea on tea.trackedentityattributeid = teav.trackedentityattributeid
+	    where tei.uid in (${teis} )	
+	    group by tei.uid
+        )endofQ`
+}
 
 exports.cache_curr_user = "dd_current_user";
 exports.cache_user_prefix = "dd_user_";
