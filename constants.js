@@ -17,17 +17,27 @@ exports.views = {
 
 exports.approval_status = {
 
-    Iapproval : "Approval1",
-    IIapproval : "Approval2",
-    Iauto : "Auto-Approval1",
-    IIauto : "Auto-Approval2",
-    Irejected : "Rejected1",
-    IIrejected : "Rejected2"
-    
+    approved : "Approved",
+    autoapproved : "Auto-Approved",
+    rejected : "Rejected",
+    resubmitted : "Re-submitted",
+    pending2 : "Pending2",
+    pending1 : "Pending1"
     
 }
 
-exports.approval_status_de = "";
+exports.approval_usergroup_level2_code="approval2ndlevel";
+exports.approval_usergroup_level1_code="approval1stlevel";
+
+exports.report_types = {
+
+    approved: "approved",
+    pending:"pending",
+    rejected : "rejected"
+}
+
+exports.approval_status_de = "OZUfNtngt0T";
+exports.approval_rejection_reason_de = "CCNnr8s3rgE";
 
 exports.query_teiWiseAttrValue = function(teis){
 

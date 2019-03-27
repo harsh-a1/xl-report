@@ -66,3 +66,29 @@ button {
     min-height: 48px;
     z-index: 1400;
 }
+
+.approvalTable{
+    table-layout:fixed;
+    width:95%;
+    word-wrap: break-word;
+    border-collapse:collapse;
+        
+}
+.approvalTable td,th{
+    border: 1px solid #dddddd;
+    text-align: left;
+    margin:0;
+    padding:0;
+}
+
+.approvalOperation{
+    width:150px;
+}
+
+.approvalOperationDiv{
+    display:block;
+}
+
+.approvalButton{
+    width:70px;
+}

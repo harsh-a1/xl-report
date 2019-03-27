@@ -35,7 +35,7 @@ window.onload = function(){
     var apiWrapper = new api.wrapper();
     
     var Pprogram = apiWrapper.getObj(`programs\\${constants.program_doc_diary}?fields=id,name,programStages[id,name,programStageDataElements[id,name,sortOrder,dataElement[id,name,displayName,shortname,optionSet[id,name,code,options[id,name,code]]]]]`)
-    var Pme = apiWrapper.getObj(`me.json?fields=id,name,displayName,organisationUnits[id,name],userCredentials[*]`);
+    var Pme = apiWrapper.getObj(`me.json?fields=id,name,displayName,organisationUnits[id,name],userGroups[id,name,code]`);
     
     
     Promise.all([Pprogram,Pme]).then(function(values){
