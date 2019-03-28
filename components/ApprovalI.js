@@ -162,7 +162,7 @@ export function ApprovalI(props){
                 var eventuids = response.rows.reduce(function(str,obj){
                     str = str + obj[0] + ";"
                     return str;
-                },null)
+                },"")
 
                 callback(eventuids)
                 
@@ -273,7 +273,7 @@ export function ApprovalI(props){
         
         return ( 
                 <div>
-                <h3> Approval {state.userAuthority==constants.approval_usergroup_level1_code?"I":"II"} </h3>
+                <h3> Approval {state.userAuthority==constants.approval_usergroup_level1_code?"MOIC":"CMO/CMS"} </h3>
                 
                 <table className="formX">
                 <tbody>

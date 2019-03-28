@@ -5,7 +5,7 @@ import constants from '../constants'
 
 
 export function ApprovalTable(props){
-   
+    
     var instance = Object.create(React.Component.prototype);
     instance.props = props;
     
@@ -38,7 +38,7 @@ export function ApprovalTable(props){
     },[]);
 
     var ouMap = state.ous.reduce(function(map,obj){
-        map[obj.id] = obj.name;
+        map[obj.id] = obj;
         return map;
     },[]);
     
@@ -51,8 +51,8 @@ export function ApprovalTable(props){
     function approveRecord(eventuid,e){        
 
         var approveDeVal = state.userAuthority==constants.approval_usergroup_level1_code?constants.approval_status.pending2:constants.approval_status.approved;
-//        approveDeVal="Pending1";
-         saveDV(eventuid,
+        //        approveDeVal="Pending1";
+        saveDV(eventuid,
                constants.approval_status_de,
                approveDeVal,
                constants.approval_rejection_reason_de,
@@ -92,14 +92,24 @@ export function ApprovalTable(props){
                 ],
                 status :status
             }
+
+
+            apiWrapper.updateObj(url,obj,function(error,body,response){
+                if (error){
+                    alert("An unexpected error occurred." + error);
+                    return;
+                }
+                
+                callback();            
+            })
             
-            callback();            
         })
     }
     
     function rejectRecord(eventuid,e){
         var reason = prompt("Please enter reason for rejection", "");
         if (!reason){return}
+        
         saveDV(eventuid,
                constants.approval_status_de,
                constants.approval_status.rejected,
@@ -127,7 +137,7 @@ export function ApprovalTable(props){
     }
 
     function getRows(){
-      
+        
         return state.events.reduce(function(list,event){
             var eventDVMap = event.dataValues.reduce(function(map,obj){
                 map[obj.dataElement] = obj.value;
@@ -137,7 +147,7 @@ export function ApprovalTable(props){
             var _list = [];
             _list.push(<td key="d_eventdate">{event.eventDate.substring(0,10)}</td>);
             _list.push(<td key="d_name of specilist">{teiAttrValMap[event.trackedEntityInstance+"U0jQjrOkFjR"]}</td>);
-            _list.push(<td key="d_ou">{ouMap[event.orgUnit]}</td>);
+            _list.push(<td key="d_ou">{makeFacilityStrBelowLevel(ouMap[event.orgUnit],2)}</td>);
             
             selectedStage.
                 programStageDataElements.
@@ -155,13 +165,22 @@ export function ApprovalTable(props){
         function getButtons(eventuid){
             return (<td className = "" key={"b_"+eventuid}><div className="approvalOperationDiv">
                     <input hidden={state.type == constants.report_types.pending?false:true} className= "approvalButton" type="button" value="Approve" onClick={approveRecord.bind(null,eventuid)}></input>
-                <input hidden={state.type == constants.report_types.pending?false:true} className= "approvalButton" type="button" value="Reject" onClick={rejectRecord.bind(null,eventuid)}></input>
+                    <input hidden={state.type == constants.report_types.pending?false:true} className= "approvalButton" type="button" value="Reject" onClick={rejectRecord.bind(null,eventuid)}></input>
                     </div></td>)
         }
     }
     
+    function makeFacilityStrBelowLevel(ou,level){        
+        return ou.ancestors.reduce(function(str,obj){
+            if(obj.level>level){
+                str = str + obj.name + " / " ;
+            }
+            return str;
+        },"")  + ou.name;                
+    }
+    
     function render(){
-      
+        
         return ( 
                 <div>
                 <h5> Record List </h5>
@@ -171,10 +190,10 @@ export function ApprovalTable(props){
                 <tr>
                 <th colSpan="3">Attributes</th>
                 <th colSpan={  selectedStage.programStageDataElements.length+1}>{selectedStage.name}</th>
-            </tr>
+                </tr>
                 <tr>
                 {getHeader()}
-                </tr>
+            </tr>
                 </thead>
 
             </table>
@@ -182,14 +201,14 @@ export function ApprovalTable(props){
                 <table className="approvalTable">
                 <tbody>
                 
-                {getRows()}
-                </tbody>
+            {getRows()}
+            </tbody>
                 </table>
-            
-            
                 
             
-                </div>
+            
+            
+            </div>
         )
     }
     
