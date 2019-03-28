@@ -1,10 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-
-import {ReportSelection} from './components/app';
 import {ApprovalI} from './components/ApprovalI';
-
 import {TreeComponent} from './lib/ous'
 import api from './dhis2API';
 import constants from './constants'

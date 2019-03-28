@@ -1,5 +1,4 @@
 import React,{propTypes} from 'react';
-import reportGenerator from '../report-generator';
 import api from '../dhis2API';
 import constants from '../constants'
 
