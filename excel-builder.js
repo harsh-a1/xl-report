@@ -31,6 +31,12 @@ function excelBuilder(mapping,
                                                                              mapping.facilityCell)
 
     XLSX.fromDataAsync(excelTemplate,{base64:true}).then(function(wb){
+        
+        if (!wb.sheet(mapping.sheetName)){
+            alert(mapping.sheetName+"<-Sheet not found. This may be a problem with the configuration of the report excel template. Please contact Admin.");
+            callback();
+            return;
+        }
         var wbOps = new fileOps(wb,mapping.sheetName);
         
         wbOps.write(rowDataCellValueList);
