@@ -12,7 +12,8 @@ function ouWiseMainQ(
     ouGroupWiseDecocStringMap,
     ouGroupUIDKeys,
     ouGroupWiseDeListCommaSeparated,
-    ouGroupWiseSourceIDs
+    ouGroupWiseSourceIDs,
+    aggregationType
 ){
     
     this.makeMainQuery = function(){
@@ -36,6 +37,22 @@ function ouWiseMainQ(
         }
         
         function getSelOuQ(key){
+
+            if (aggregationType == "raw_report"){
+                return queries.getSelOUSelectQ(key).replace("sum(dv.value :: float)","max(dv.value)")
+                    + queries.getInnerJoinPePtDeCoc()
+                    + queries.getInnerJoinOusOu(oulevel)
+                    + queries.getFiltersPePtDateDeCocAttrOptionValSource_raw(startdate,
+                                                                             enddate,
+                                                                             ptype,
+                                                                             attroptioncombo,
+                                                                             queries.getOrgUnitIDsFromUIDs(ouuid),
+                                                                             ouGroupWiseDeListCommaSeparated[key],
+                                                                             ouGroupWiseDecocStringMap[key])
+                    + queries.getOUGroupBySourceidDeCoc();
+                
+            }
+            
             return queries.getSelOUSelectQ(key)
                 + queries.getInnerJoinPePtDeCoc()
                 + queries.getInnerJoinOusOu(oulevel)
@@ -50,6 +67,24 @@ function ouWiseMainQ(
         }
         
         function getQQ(key){
+
+            if (aggregationType == "raw_report"){
+                
+                return queries.getOUSelectQ(key,
+                                            oulevel+1).replace("sum(dv.value :: float)","max(dv.value)")
+                    + queries.getInnerJoinPePtDeCoc()
+                    + queries.getInnerJoinOusOu(oulevel+1)
+                    + queries.getFiltersPePtDateDeCocAttrOptionValSource_raw(startdate,
+                                                                             enddate,
+                                                                             ptype,
+                                                                             attroptioncombo,
+                                                                             ouGroupWiseSourceIDs[key],
+                                                                             ouGroupWiseDeListCommaSeparated[key],
+                                                                             ouGroupWiseDecocStringMap[key])
+                    + queries.getOUGroupBySelOUChildren(oulevel+1);
+            }
+            
+            
             return queries.getOUSelectQ(key,
                                         oulevel+1)
                 + queries.getInnerJoinPePtDeCoc()
@@ -82,12 +117,34 @@ function ouWiseMainQ(
         return Q;
 
         function getQ(key){
+
+            if (aggregationType == "raw_report"){
+                return queries.getDVFilteredByOUGroupDescendants( getQQ(key ),
+                                                               selougroupuid
+                                                                ).replace("sum(dataq.value) as value","max(dataq.value) as value");
+            }
+            
             return  queries.getDVFilteredByOUGroupDescendants( getQQ(key ),
                                                                selougroupuid
                                                              );
         }
         
         function getQQ(key){
+
+            if (aggregationType == "raw_report"){
+                return queries.getOUGroupSelectQ(key).replace("sum(dv.value :: float)","max(dv.value)")
+                    + queries.getInnerJoinPePtDeCoc()
+                    + queries.getFiltersPePtDateDeCocAttrOptionValSource_raw(startdate,
+                                                                             enddate,
+                                                                             ptype,
+                                                                             attroptioncombo,
+                                                                             ouGroupWiseSourceIDs[key],
+                                                                             ouGroupWiseDeListCommaSeparated[key],
+                                                                             ouGroupWiseDecocStringMap[key])
+                    + queries.getOUGroupBySourceidDeCoc();
+            }
+
+            
             return queries.getOUGroupSelectQ(key)
                 + queries.getInnerJoinPePtDeCoc()
                 + queries.getFiltersPePtDateDeCocAttrOptionValSource(startdate,

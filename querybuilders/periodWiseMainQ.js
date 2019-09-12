@@ -7,12 +7,14 @@ function periodWiseMainQ(startdate,
                          ouGroupWiseDecocStringMap,
                          ouGroupUIDKeys,
                          ouGroupWiseDeListCommaSeparated,
-                         ouGroupWiseSourceIDs
+                         ouGroupWiseSourceIDs,
+                         aggregationType
                          ){
+
+    
     
     this.makeMainQuery = function(){
-        
-        
+                
         var Q = ouGroupUIDKeys.map(key => {
             return getQ(key)
         })
@@ -30,8 +32,22 @@ function periodWiseMainQ(startdate,
     }
 
     function getQ(key){
-        return queries.getPeriodSelectQ(key) +
-            queries.getInnerJoinPePtDeCoc() +
+
+        if (aggregationType == "raw_report"){
+            return queries.getPeriodSelectQ(key).replace("sum(dv.value :: float)","max(dv.value)")
+                + queries.getInnerJoinPePtDeCoc(aggregationType)
+                + queries.getFiltersPePtDateDeCocAttrOptionValSource_raw(startdate,
+                                                                         enddate,
+                                                                         ptype,
+                                                                         attroptioncombo,
+                                                                         ouGroupWiseSourceIDs[key],
+                                                                         ouGroupWiseDeListCommaSeparated[key],
+                                                                         ouGroupWiseDecocStringMap[key])
+                + queries.getPeriodGroupBy();
+        }
+        
+        return queries.getPeriodSelectQ(key)
+            + queries.getInnerJoinPePtDeCoc(aggregationType) +
             queries.getFiltersPePtDateDeCocAttrOptionValSource(startdate,
                                                                enddate,
                                                                ptype,
@@ -41,6 +57,7 @@ function periodWiseMainQ(startdate,
                                                                ouGroupWiseDecocStringMap[key]) +
             queries.getPeriodGroupBy();
     }
+
 }
 
 module.exports = periodWiseMainQ;

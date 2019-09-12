@@ -132,7 +132,7 @@ function sumMap(ref,map){
         if (!ref[key]){
             ref[key] = map[key];
         }else{
-            ref[key] = parseInt(ref[key]) + parseInt(map[key]);
+            ref[key] = Number(ref[key]) + Number(map[key]);
         }
     }
 

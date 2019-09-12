@@ -101,6 +101,13 @@ export function ReportSelection(props){
             flag = true;
         }
 
+        if (state.selectedOUGroup != "-1" &&
+            state.aggregationType == "raw_report" &&
+            state.selectedReport.reportType == "PeriodWiseProgressive"){
+            alert("Raw Report Mode does not support Org Unit Group Selection in Period Wise Progress Report!");
+            flag=true;            
+        }
+        
         return flag;
     }
     
@@ -203,7 +210,10 @@ export function ReportSelection(props){
                 </tr>              
                 <tr>
                 <td> Select Org Unit Group : </td><td><select value={state.selectedOUGroup} onChange = {onOUGroupChange} id="ouGroup">{getOrgUnitGroupOptions(props.data.ouGroups)}</select></td>
-                <td className="leftM" > Select Aggregation Mode : </td><td><select onChange = {onAggregationTypeChange.bind(this)} value = { state.aggregationType  }  id="aggregationType"> <option key="use_captured"  value="use_captured" > Use Captured </option> <option key="agg_descendants" value="agg_descendants" > Generate Aggregated </option> </select></td>
+                <td className="leftM" > Select Aggregation Mode : </td><td><select onChange = {onAggregationTypeChange.bind(this)} value = { state.aggregationType  }  id="aggregationType"> <option key="use_captured"  value="use_captured" > Use Captured </option>
+                <option key="agg_descendants" value="agg_descendants" > Generate Aggregated </option>
+                <option key="no_agg_use_captured" value="raw_report" > Raw Report </option>
+                </select></td>
                 </tr>
                 <tr></tr><tr></tr>
                 <tr><td>  <input type="submit" value="Generate Report" ></input></td>

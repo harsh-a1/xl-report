@@ -39,7 +39,7 @@ function Queries(){
         sum(dv.value :: float) as value
         from datavalue dv`
     }
-    
+
     this.getDVFilteredByOUGroupDescendants = function(dv,ouGroupUID){
         return `select groupmemq.pivot as pivot,
         dataq.decoc,
@@ -94,15 +94,42 @@ function Queries(){
 	and dv.sourceid in ( ${sourceids } )
         and dv.dataelementid in  (select dataelementid from dataelement where uid in (${deListCommaSeparated}))
         and concat(de.uid,'-',coc.uid) in (${decocStr}) `
-        
+
+    }
+    this.getFiltersPePtDateDeCocAttrOptionValSource_raw = function(startdate,
+                                                                   enddate,
+                                                                   ptype,
+                                                                   attroptioncombo,
+                                                                   sourceids,
+                                                                   deListCommaSeparated,
+                                                                   decocStr){
+        if (!sourceids){
+            sourceids = 0;
+        }
+        var format = "";
+        switch(ptype){
+        case "Monthly" : format = "yyyymm"
+            break
+        default : format = "yyyymm"
+        }
+
+        return `
+        where pe.startdate >= to_date('${startdate}','${format}')
+        and pe.startdate <= to_date('${enddate}','${format}')
+        and dv.attributeoptioncomboid=${attroptioncombo}
+	and dv.sourceid in ( ${sourceids } )
+        and dv.dataelementid in  (select dataelementid from dataelement where uid in (${deListCommaSeparated}))
+        and concat(de.uid,'-',coc.uid) in (${decocStr}) `
+
     }
 
+    
     this.getPeriodGroupBy = function(){
         return `group by pe.startdate,de.uid,coc.uid`
     }
 
-     this.getOUGroupBySelOUChildren = function(oulevel){
-         return `group by ous.uidlevel${oulevel},de.uid,coc.uid`
+    this.getOUGroupBySelOUChildren = function(oulevel){
+        return `group by ous.uidlevel${oulevel},de.uid,coc.uid`
     }    
 
     this.getOUGroupBySourceidDeCoc = function(){

@@ -44,7 +44,7 @@ function report(state){
         startdate : state.startPe,
         enddate : state.endPe,
         ptype : "Monthly",
-        attributeOptionComboId : 15,
+        attributeOptionComboId : 19,
         ouGroupWiseDecocStringMap : ouGroupWiseDecocStringMap,
         ouGroupUIDKeys : ouGroupUIDKeys,
         ouGroupWiseDeListCommaSeparated : ouGroupWiseDeListCommaSeparated,

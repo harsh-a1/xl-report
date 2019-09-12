@@ -25,7 +25,7 @@ function periodWiseProgressiveReport(params,callback){
         
         var ouGroupWiseSourceIDs = JSON.parse(body.rows[0]);
         var mainQ = __getMainQuery(params,ouGroupWiseSourceIDs);
-
+        console.log(mainQ);
         sqlViewService.dip(SQLVIEWPREFIX,mainQ, function(error,response,body){
             if (error){
 
@@ -64,7 +64,8 @@ function __getMainQuery(params,ouGroupWiseSourceIDs){
              params.ouGroupWiseDecocStringMap,
              params.ouGroupUIDKeys,
              params.ouGroupWiseDeListCommaSeparated,
-             ouGroupWiseSourceIDs
+             ouGroupWiseSourceIDs,
+             params.aggregationType
             );
     
 
@@ -74,7 +75,8 @@ function __getMainQuery(params,ouGroupWiseSourceIDs){
         if (params.aggregationType == "use_captured"){
             return qb.makeMainQuery(); 
         }
-        else if (params.aggregationType == "agg_descendants"){
+        else if (params.aggregationType == "agg_descendants" ||
+                 params.aggregationType == "raw_report"){
             return qb.makeMainQuery();
         }
         break
@@ -83,7 +85,8 @@ function __getMainQuery(params,ouGroupWiseSourceIDs){
         if (params.aggregationType == "use_captured"){
             return qb.makeMainQuery(); 
         }
-        else if (params.aggregationType == "agg_descendants"){
+        else if (params.aggregationType == "agg_descendants" ||
+            params.aggregationType == "raw_report"){
             return qb.makeMainQuery(); 
         }
     }
@@ -102,7 +105,8 @@ function __getSourceIDQuery(params){
     switch(params.selectedOUGroupUID){
         
     case "-1" : // no group
-        if (params.aggregationType == "use_captured"){
+        if (params.aggregationType == "use_captured" ||
+            params.aggregationType == "raw_report"){
             return qb.
                 makeUseCapturedQuery(); 
         }
@@ -113,7 +117,8 @@ function __getSourceIDQuery(params){
         break
         
     default : // group case
-        if (params.aggregationType == "use_captured"){
+        if (params.aggregationType == "use_captured" ||
+            params.aggregationType == "raw_report"){
             return qb.
                 makeOuGroupUseCapturedQuery()
         }
