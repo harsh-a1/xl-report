@@ -102,21 +102,22 @@ export function ReportSelection(props){
         }
 
         if ((Number(state.endPe) - Number(state.startPe)) == 0){
-            alert("You have selected zero periods!");
+            alert("Please select at least 1 unit of period.");
             flag=true;
         }
         
-        if (state.selectedOUGroup != "-1" &&
-            state.aggregationType == "raw_report" &&
-            state.selectedReport.reportType == "PeriodWiseProgressive"){
-            alert("Raw Data Mode does not support Org Unit Group Selection in Period Wise Progress Reports!");
-            flag=true;            
-        }
-
         if (state.aggregationType == "raw_report"){
-            if ((Number(state.endPe) - Number(state.startPe)) != 1){
+            
+            if (((Number(state.endPe) - Number(state.startPe)) != 1)  &&
+                state.selectedReport.reportType == "OUWiseProgressive"){
                 alert("Raw Data Mode does not support Mulitple Period Selection for Org Unit Progressive Reports!");
                 flag=true;
+            }
+
+            if (state.selectedOUGroup != "-1" &&
+                state.selectedReport.reportType == "PeriodWiseProgressive"){
+                alert("Raw Data Mode does not support Org Unit Group Selection in Period Wise Progress Reports!");
+                flag=true;            
             }
         }
         

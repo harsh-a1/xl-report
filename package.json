@@ -1,21 +1,21 @@
 {
-  "name": "react-skeleton",
-  "version": "1.0.0",
-  "description": "",
+  "name": "xl-report",
+  "version": "1.2.0",
+  "description": "Excel Template Based DHIS2 Report",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/harsh-a1/react-skeleton.git"
+    "url": "git+https://github.com/harsh-a1/xl-report.git"
   },
   "author": "harsh",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/harsh-a1/react-skeleton/issues"
+    "url": "https://github.com/harsh-a1/xl-report/issues"
   },
-  "homepage": "https://github.com/harsh-a1/react-skeleton#readme",
+  "homepage": "https://github.com/harsh-a1/xl-report#readme",
   "dependencies": {
     "dhis2api": "^1.1.2",
     "dhis2ou": "^2.0.0",
