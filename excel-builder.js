@@ -130,7 +130,7 @@ function sumMap(ref,map){
 
     for (var key in map){
         if (!ref[key]){
-            ref[key] = map[key];
+            ref[key] = Number(map[key]);
         }else{
             ref[key] = Number(ref[key]) + Number(map[key]);
         }

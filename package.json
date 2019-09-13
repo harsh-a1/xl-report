@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/harsh-a1/react-skeleton#readme",
   "dependencies": {
+    "dhis2api": "^1.1.2",
+    "dhis2ou": "^2.0.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "webpack": "^4.2.0",

@@ -4,8 +4,10 @@ import ReactDOM from 'react-dom';
 
 import {ReportSelection} from './components/app';
 import {TreeComponent} from './lib/ous'
-import api from './dhis2API';
+//import api from './dhis2API';
 
+//import {TreeComponent} from 'dhis2ou'
+import api from 'dhis2api';
 
 window.onload = function(){
 /* Menu Bar */

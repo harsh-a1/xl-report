@@ -1,5 +1,5 @@
 import sqlQueryBuilder from './sql-query-builder';
-import api from './dhis2API';
+import api from 'dhis2api';
 import excelBuilder from './excel-builder.js';
 
 function periodWiseProgressiveReport(params,callback){
