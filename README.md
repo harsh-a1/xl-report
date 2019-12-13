@@ -8,7 +8,7 @@ Basic Features :
  - XLSX templating onto which data is written and made avilable for download
  
 
-There is a sister application to this [ https://github.com/harsh-a1/xl-report-mapping ]
+Brother to [ https://github.com/harsh-a1/xl-report-mapping ]
 
 Dev Info
 - npm install
