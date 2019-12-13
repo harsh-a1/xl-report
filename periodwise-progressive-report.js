@@ -25,7 +25,7 @@ function periodWiseProgressiveReport(params,callback){
         
         var ouGroupWiseSourceIDs = JSON.parse(body.rows[0]);
         var mainQ = __getMainQuery(params,ouGroupWiseSourceIDs);
-        console.log(mainQ);
+        //console.log(mainQ);
         sqlViewService.dip(SQLVIEWPREFIX,mainQ, function(error,response,body){
             if (error){
 

@@ -11,11 +11,27 @@ export function ReportSelection(props){
         map[obj.key] = obj;
         return map;
     },{});
-    
+
+    var reportGroupMap = props.data.reports.reduce((map,obj) =>{
+        if (!map[obj.reportGroup] && obj.reportGroup){
+            map[obj.reportGroup] = obj;
+        }
+        return map;
+    },{});
+    var reportGroups = [];
+
+    for (var key in reportGroupMap){
+        reportGroups.push(reportGroupMap[key]);
+    }
+
+    reportGroups.sort(function(a,b){
+        return a.reportGroup > b.reportGroup ?1:-1;
+    })
 
     var state = {
         selectedReport : "-1",
         selectedReportKey : "-1",
+        selectedReportGroup : "all",
         reportList : [],
         selectedOUGroup : "-1",
         selectedOU : "-1",
@@ -101,11 +117,11 @@ export function ReportSelection(props){
             flag = true;
         }
 
-        if ((Number(state.endPe) - Number(state.startPe)) == 0){
+   /*     if ((Number(state.endPe) - Number(state.startPe)) == 0){
             alert("Please select at least 1 unit of period.");
             flag=true;
         }
-        
+     */   
         if (state.aggregationType == "raw_report"){
             
             if (((Number(state.endPe) - Number(state.startPe)) != 1)  &&
@@ -131,13 +147,27 @@ export function ReportSelection(props){
                       ];
         
         reports.forEach(function(report){
-            options.push(<option key = {report.key}  value={report.key} >{report.name}</option>);
-        });
-        
-        return options;
-        
-    }
 
+            if (state.selectedReportGroup == "all" || report.reportGroup == state.selectedReportGroup){
+                
+                options.push(<option key = {report.key}  value={report.key} >{report.name}</option>);
+            }
+        });        
+        return options;      
+    }
+    
+    function getReportGroupOptions(reports){
+
+        var options = [
+                <option key="select_report_group"  value="all"> -- all -- </option>
+                      ];
+        
+        reportGroups.forEach(function(report){
+            options.push(<option key = {report.reportGroup}  value={report.reportGroup} >{report.reportGroup}</option>);
+        });        
+        return options;
+    }
+    
     function onReportChange(e){
         var reportKey = e.target.selectedOptions[0].value;
         
@@ -203,6 +233,12 @@ export function ReportSelection(props){
             instance.setState(state);
         }
 
+        function onReportGroupChange(e){
+            state.selectedReportGroup = e.target.value;
+            state.selectedReport = "-1";
+            state.selectedReportKey="-1";
+            instance.setState(state);
+        }
         
         return ( 
                 <form onSubmit={handleSubmit} className="formX">
@@ -210,6 +246,11 @@ export function ReportSelection(props){
             
                 <table className="formX">
                 <tbody>
+                 <tr>
+                <td>  Select Report Group<span style={{"color":"red"}}> * </span> : </td><td><select  value={state.selectedReportGroup} onChange={onReportGroupChange} id="reportgroup">{getReportGroupOptions(props.data.reports)}</select><br></br>              
+                </td>
+                <td className="leftM">  </td>
+                </tr>
                 <tr>
                 <td>  Select Report<span style={{"color":"red"}}> * </span> : </td><td><select  value={state.selectedReportKey} onChange={onReportChange} id="report">{getReportOptions(props.data.reports)}</select><br></br>                <label key="reportValidation" ><i>{state.reportValidation}</i></label>
                 </td>
