@@ -1,6 +1,6 @@
 # xl-report
 
-This is a port of an older Java module used in India local  DHIS2 implementations for reporting purposes.
+This is a port of an older Java module (Progressive Reports) used in India local  DHIS2 implementations for reporting purposes.
 
 Basic Features :
  - Time wise and Facility wise analysis of aggregated data 
