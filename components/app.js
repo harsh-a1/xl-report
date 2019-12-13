@@ -7,6 +7,11 @@ export function ReportSelection(props){
     var instance = Object.create(React.Component.prototype);
     instance.props = props;
 
+    // sort reports by name
+    instance.props.data.reports.sort(function(a,b){
+        return a.name > b.name ? 1:-1;
+    });
+    
     var keyToObjMap = props.data.reports.reduce((map,obj) =>{
         map[obj.key] = obj;
         return map;
@@ -159,7 +164,7 @@ export function ReportSelection(props){
     function getReportGroupOptions(reports){
 
         var options = [
-                <option key="select_report_group"  value="all"> -- all -- </option>
+                <option key="select_report_group"  value="all"> All </option>
                       ];
         
         reportGroups.forEach(function(report){
@@ -247,7 +252,7 @@ export function ReportSelection(props){
                 <table className="formX">
                 <tbody>
                  <tr>
-                <td>  Select Report Group<span style={{"color":"red"}}> * </span> : </td><td><select  value={state.selectedReportGroup} onChange={onReportGroupChange} id="reportgroup">{getReportGroupOptions(props.data.reports)}</select><br></br>              
+                <td>  Select Report Group : </td><td><select  value={state.selectedReportGroup} onChange={onReportGroupChange} id="reportgroup">{getReportGroupOptions(props.data.reports)}</select><br></br>              
                 </td>
                 <td className="leftM">  </td>
                 </tr>
